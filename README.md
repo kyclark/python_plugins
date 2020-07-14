@@ -39,6 +39,28 @@ The "Python Packaging User Guide" has an entry on [Creating and discovering plug
 Following the suggestions there, I explored how to create a Python program that will create a greeting for a given language.
 In the "plugins" directory, you'll notice there are modules called `greet_english.py` and `greet_spanish.py`.
 
+```
+$ ls -1 plugins/
+Makefile
+greet_english.py
+greet_spanish.py
+test_greet_english.py
+test_greet_spanish.py
+```
+
+These modules include tests which can be discovered and run using `pytest`:
+
+```
+$ pytest -v
+============================= test session starts ==============================
+...
+
+test_greet_english.py::test_greet PASSED                                 [ 50%]
+test_greet_spanish.py::test_greet PASSED                                 [100%]
+
+============================== 2 passed in 0.01s ===============================
+```
+
 The `driver.py` program is the user interface:
 
 ```
@@ -139,6 +161,21 @@ if __name__ == '__main__':
 
 1. This looks in the "plugins" directory that lives in the same directory as the `driver.py` file.
 2. This calls the `greet()` function in the given plugin passing the "name" value.
+
+There is a test for this program:
+
+```
+$ pytest -v test_driver.py
+============================= test session starts ==============================
+...
+
+test_driver.py::test_exists PASSED                                       [ 25%]
+test_driver.py::test_invalid_language PASSED                             [ 50%]
+test_driver.py::test_english PASSED                                      [ 75%]
+test_driver.py::test_spanish PASSED                                      [100%]
+
+============================== 4 passed in 0.18s ===============================
+```
 
 ## Adding a new plugin
 
