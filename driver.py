@@ -3,6 +3,7 @@
 
 import argparse
 import importlib
+import os
 import pkgutil
 from typing import NamedTuple, Callable, Dict
 
@@ -40,9 +41,11 @@ def get_args(plugins: Dict[str, Callable]) -> Args:
 def main():
     """Make a jazz noise here"""
 
+    cwd = os.path.realpath(__file__)
+    plugin_dir = os.path.join(os.path.dirname(cwd), 'plugins')
     plugins = {
-        name.replace('greet_', ''): importlib.import_module(name)
-        for finder, name, ispkg in pkgutil.iter_modules()
+        name.replace('greet_', ''): importlib.import_module('plugins.' + name)
+        for _, name, _ in pkgutil.iter_modules(path=[plugin_dir])
         if name.startswith('greet_')
     }
 
